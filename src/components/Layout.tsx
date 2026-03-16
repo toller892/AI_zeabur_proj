@@ -1,59 +1,80 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { ClipboardList, CalendarDays, Dices, Users } from 'lucide-react'
+import { CalendarDays, ClipboardList, Dices, Users, Sparkles, PanelLeftClose } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navItems = [
-  { to: '/', icon: CalendarDays, label: '排期看板', emoji: '📅' },
-  { to: '/signup', icon: ClipboardList, label: '报名', emoji: '✍️' },
-  { to: '/admin', icon: Dices, label: '抽签管理', emoji: '🎲' },
-  { to: '/members', icon: Users, label: '人员', emoji: '👥' },
+  { to: '/', label: '排期看板', icon: CalendarDays },
+  { to: '/signup', label: '报名', icon: ClipboardList },
+  { to: '/admin', label: '抽签管理', icon: Dices },
+  { to: '/members', label: '人员', icon: Users },
 ]
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-white flex">
-      {/* Sidebar - Right */}
-      <aside className="fixed right-0 top-0 bottom-0 w-60 bg-[#fbfbfa] flex flex-col border-l border-[#e9e9e7]">
-        {/* Logo */}
-        <div className="h-14 flex items-center gap-2 px-4 hover:bg-[#efefef] cursor-pointer transition-colors">
-          <span className="text-2xl">🤖</span>
-          <span className="text-sm font-medium text-[#37352f]">AI 分享会</span>
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900">
+      <aside className="fixed inset-y-0 left-0 z-40 w-72 border-r border-slate-200 bg-white">
+        <div className="flex h-16 items-center gap-3 border-b border-slate-200 px-5">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-sm">
+            <Sparkles className="h-5 w-5" />
+          </div>
+          <div className="flex-1">
+            <div className="text-sm font-semibold text-slate-900">AI 分享会</div>
+            <div className="text-xs text-slate-500">报名与排期管理</div>
+          </div>
+          <button className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors">
+            <PanelLeftClose className="h-4 w-4" />
+          </button>
         </div>
 
-        {/* Nav Items */}
-        <nav className="flex-1 py-2 px-2">
-          <div className="space-y-0.5">
-            {navItems.map(({ to, label, emoji }) => (
+        <div className="px-4 py-5">
+          <div className="mb-3 px-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+            导航
+          </div>
+          <nav className="space-y-1.5">
+            {navItems.map(({ to, label, icon: Icon }) => (
               <NavLink key={to} to={to} end={to === '/'}>
                 {({ isActive }) => (
                   <div
                     className={cn(
-                      'flex items-center gap-2.5 px-3 py-1.5 rounded-md text-sm transition-colors cursor-pointer',
+                      'group flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-medium transition-all',
                       isActive
-                        ? 'bg-[#efefef] text-[#37352f]'
-                        : 'text-[#787774] hover:bg-[#efefef]'
+                        ? 'bg-slate-900 text-white shadow-sm'
+                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                     )}
                   >
-                    <span className="text-lg">{emoji}</span>
+                    <Icon className={cn('h-4.5 w-4.5', isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-700')} />
                     <span>{label}</span>
                   </div>
                 )}
               </NavLink>
             ))}
-          </div>
-        </nav>
+          </nav>
+        </div>
 
-        {/* Footer */}
-        <div className="p-4 text-xs text-[#9b9a97]">
-          每周五 10:15
+        <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+          <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">会议时间</div>
+          <div className="mt-2 text-sm font-medium text-slate-900">每周五 10:15</div>
+          <p className="mt-1 text-xs leading-5 text-slate-500">建议周四前完成报名与排期，现场只做确认。</p>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <div className="flex-1 mr-60">
-        <main className="max-w-4xl mx-auto px-24 py-20">
-          <Outlet />
+      <div className="ml-72 min-h-screen">
+        <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl">
+          <div className="flex h-16 items-center justify-between px-10">
+            <div>
+              <div className="text-sm font-semibold text-slate-900">分享会后台</div>
+              <div className="text-xs text-slate-500">Linear × Tremor 风格重构</div>
+            </div>
+            <div className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600">
+              当前节奏：每轮 4 人
+            </div>
+          </div>
+        </header>
+
+        <main className="px-10 py-10">
+          <div className="mx-auto max-w-7xl">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
