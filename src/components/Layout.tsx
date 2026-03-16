@@ -13,12 +13,12 @@ const navItems = [
 export default function Layout() {
   return (
     <div className="min-h-screen bg-[#09090b] flex">
-      {/* Sidebar */}
+      {/* Sidebar - Right */}
       <motion.aside
-        initial={{ x: -20, opacity: 0 }}
+        initial={{ x: 20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.4 }}
-        className="fixed left-0 top-0 bottom-0 w-72 bg-[#0c0c0f] border-r border-zinc-800/50 flex flex-col z-50"
+        className="fixed right-0 top-0 bottom-0 w-72 bg-[#0c0c0f] border-l border-zinc-800/50 flex flex-col z-50"
       >
         {/* Logo */}
         <div className="h-20 flex items-center gap-4 px-8 border-b border-zinc-800/50">
@@ -74,9 +74,9 @@ export default function Layout() {
       </motion.aside>
 
       {/* Main Content */}
-      <div className="flex-1 ml-72">
+      <div className="flex-1 mr-72">
         {/* Top gradient glow */}
-        <div className="fixed top-0 left-72 right-0 h-[250px] bg-gradient-to-b from-indigo-950/30 via-purple-950/10 to-transparent pointer-events-none z-0" />
+        <div className="fixed top-0 left-0 right-72 h-[250px] bg-gradient-to-b from-indigo-950/30 via-purple-950/10 to-transparent pointer-events-none z-0" />
 
         <main className="relative z-10 p-10 min-h-screen">
           <div className="max-w-6xl">
