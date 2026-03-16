@@ -23,7 +23,7 @@ export default function Layout() {
         transition={{ duration: 0.5 }}
         className="sticky top-0 z-50 border-b border-zinc-800/50 bg-zinc-950/80 backdrop-blur-xl"
       >
-        <div className="mx-auto max-w-6xl flex items-center justify-between px-6 h-16">
+        <div className="w-full flex items-center justify-between px-8 h-16">
           <div className="flex items-center gap-2.5">
             <motion.div
               animate={{ rotate: [0, 360] }}
@@ -68,7 +68,7 @@ export default function Layout() {
       </motion.nav>
 
       {/* Main Content */}
-      <main className="relative z-10 mx-auto max-w-6xl px-6 py-8">
+      <main className="relative z-10 w-full px-8 py-8">
         <Outlet />
       </main>
     </div>
