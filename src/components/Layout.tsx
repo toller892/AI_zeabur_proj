@@ -13,8 +13,8 @@ const navItems = [
 export default function Layout() {
   return (
     <div className="min-h-screen bg-white flex">
-      {/* Sidebar */}
-      <aside className="fixed left-0 top-0 bottom-0 w-60 bg-[#fbfbfa] flex flex-col border-r border-[#e9e9e7]">
+      {/* Sidebar - Right */}
+      <aside className="fixed right-0 top-0 bottom-0 w-60 bg-[#fbfbfa] flex flex-col border-l border-[#e9e9e7]">
         {/* Logo */}
         <div className="h-14 flex items-center gap-2 px-4 hover:bg-[#efefef] cursor-pointer transition-colors">
           <span className="text-2xl">🤖</span>
@@ -51,7 +51,7 @@ export default function Layout() {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 ml-60">
+      <div className="flex-1 mr-60">
         <main className="max-w-4xl mx-auto px-24 py-20">
           <Outlet />
         </main>
