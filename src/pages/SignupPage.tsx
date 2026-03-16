@@ -48,7 +48,7 @@ export default function SignupPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="max-w-xl mx-auto space-y-8"
+      className="max-w-2xl mx-auto space-y-8"
     >
       {/* Header */}
       <div className="space-y-2 text-center">

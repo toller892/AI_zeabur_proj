@@ -65,7 +65,7 @@ export default function AdminPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="max-w-2xl mx-auto space-y-8"
+      className="max-w-4xl mx-auto space-y-8"
     >
       {/* Header */}
       <div className="space-y-2">
