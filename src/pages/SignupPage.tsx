@@ -40,7 +40,7 @@ export default function SignupPage() {
   }
 
   const inputClass =
-    'w-full px-4 py-3 rounded-xl bg-zinc-900/80 border border-zinc-800 text-white placeholder-zinc-600 ' +
+    'w-full px-5 py-4 rounded-xl bg-zinc-900/80 border border-zinc-800 text-white text-base placeholder-zinc-600 ' +
     'focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/50 transition-all duration-300'
 
   return (
@@ -48,14 +48,14 @@ export default function SignupPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="max-w-4xl mx-auto space-y-8"
+      className="max-w-3xl space-y-10"
     >
       {/* Header */}
-      <div className="space-y-2 text-center">
+      <div className="space-y-3">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-3xl font-bold text-white"
+          className="text-4xl font-bold text-white"
         >
           📋 报名分享
         </motion.h1>
@@ -63,14 +63,14 @@ export default function SignupPage() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-zinc-400"
+          className="text-lg text-zinc-400"
         >
           报名参加每周五 10:15 的 AI 分享会
         </motion.p>
       </div>
 
       {/* Form */}
-      <AnimatedCard hoverable={false} className="relative overflow-hidden">
+      <AnimatedCard hoverable={false} className="relative overflow-hidden !p-8">
         <Confetti show={showConfetti} />
 
         {submitted ? (
@@ -78,45 +78,43 @@ export default function SignupPage() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            className="flex flex-col items-center gap-4 py-8"
+            className="flex flex-col items-center gap-5 py-12"
           >
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 500, damping: 15, delay: 0.1 }}
             >
-              <CheckCircle2 className="w-16 h-16 text-emerald-400" />
+              <CheckCircle2 className="w-20 h-20 text-emerald-400" />
             </motion.div>
-            <h3 className="text-xl font-semibold text-white">报名成功！</h3>
-            <p className="text-zinc-400 text-sm">已加入候选列表，等待排期确认</p>
+            <h3 className="text-2xl font-semibold text-white">报名成功！</h3>
+            <p className="text-lg text-zinc-400">已加入候选列表，等待排期确认</p>
           </motion.div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name */}
-            <div className="space-y-2">
-              <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
-                <Pen className="w-3.5 h-3.5 text-indigo-400" />
+            <div className="space-y-3">
+              <label className="flex items-center gap-2 text-base font-medium text-zinc-300">
+                <Pen className="w-5 h-5 text-indigo-400" />
                 姓名 <span className="text-red-400">*</span>
               </label>
-              <motion.div whileFocus={{ scale: 1.01 }}>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="请输入姓名"
-                  className={inputClass}
-                  required
-                />
-              </motion.div>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="请输入姓名"
+                className={inputClass}
+                required
+              />
             </div>
 
             {/* Date */}
-            <div className="space-y-2">
-              <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
-                <CalendarDays className="w-3.5 h-3.5 text-indigo-400" />
+            <div className="space-y-3">
+              <label className="flex items-center gap-2 text-base font-medium text-zinc-300">
+                <CalendarDays className="w-5 h-5 text-indigo-400" />
                 分享日期 <span className="text-red-400">*</span>
               </label>
-              <div className="grid grid-cols-1 gap-2">
+              <div className="grid grid-cols-1 gap-3">
                 {fridays.slice(0, 6).map((f, i) => {
                   const count = getSignupsForDate(f.date).length
                   return (
@@ -129,14 +127,14 @@ export default function SignupPage() {
                       whileHover={{ x: 4 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setTargetDate(f.date)}
-                      className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm text-left transition-all ${
+                      className={`flex items-center justify-between px-5 py-4 rounded-xl text-base text-left transition-all ${
                         targetDate === f.date
                           ? 'bg-indigo-600/15 border border-indigo-500/30 text-indigo-300'
                           : 'bg-zinc-900/50 border border-zinc-800/50 text-zinc-400 hover:border-zinc-700'
                       }`}
                     >
                       <span>{f.label}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${
+                      <span className={`text-sm px-3 py-1 rounded-full ${
                         count >= 4
                           ? 'bg-amber-500/10 text-amber-400'
                           : 'bg-zinc-800 text-zinc-500'
@@ -150,9 +148,9 @@ export default function SignupPage() {
             </div>
 
             {/* Topic */}
-            <div className="space-y-2">
-              <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
-                <FileText className="w-3.5 h-3.5 text-indigo-400" />
+            <div className="space-y-3">
+              <label className="flex items-center gap-2 text-base font-medium text-zinc-300">
+                <FileText className="w-5 h-5 text-indigo-400" />
                 分享主题 <span className="text-red-400">*</span>
               </label>
               <input
@@ -166,16 +164,16 @@ export default function SignupPage() {
             </div>
 
             {/* Description */}
-            <div className="space-y-2">
-              <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
-                <FileText className="w-3.5 h-3.5 text-zinc-500" />
+            <div className="space-y-3">
+              <label className="flex items-center gap-2 text-base font-medium text-zinc-300">
+                <FileText className="w-5 h-5 text-zinc-500" />
                 内容描述 <span className="text-zinc-600">(选填)</span>
               </label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="简要描述分享的内容..."
-                rows={3}
+                rows={4}
                 className={inputClass + ' resize-none'}
               />
             </div>
@@ -184,10 +182,10 @@ export default function SignupPage() {
             <ShimmerButton
               type="submit"
               disabled={!name.trim() || !topic.trim() || !targetDate}
-              className="w-full"
+              className="w-full !py-4 !text-lg"
               size="lg"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-5 h-5" />
               提交报名
             </ShimmerButton>
           </form>
@@ -196,20 +194,20 @@ export default function SignupPage() {
 
       {/* Current signups for selected date */}
       {signupsForSelected.length > 0 && !submitted && (
-        <AnimatedCard hoverable={false} delay={0.2}>
-          <h3 className="text-sm font-semibold text-zinc-400 mb-3">
+        <AnimatedCard hoverable={false} delay={0.2} className="!p-6">
+          <h3 className="text-base font-semibold text-zinc-400 mb-4">
             📊 {targetDate} 已报名 ({signupsForSelected.length} 人)
           </h3>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {signupsForSelected.map((s, i) => (
               <motion.div
                 key={s.id}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="flex items-center gap-3 text-sm"
+                className="flex items-center gap-4 text-base"
               >
-                <span className="w-5 h-5 rounded-full bg-zinc-800 flex items-center justify-center text-xs text-zinc-500">
+                <span className="w-7 h-7 rounded-full bg-zinc-800 flex items-center justify-center text-sm text-zinc-500">
                   {i + 1}
                 </span>
                 <span className="text-zinc-300">{s.name}</span>
