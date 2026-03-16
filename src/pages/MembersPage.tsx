@@ -1,127 +1,103 @@
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { useStore } from '@/store/useStore'
-import { AnimatedList, AnimatedListItem } from '@/components/ui/AnimatedCard'
-import { Button } from '@/components/ui/Button'
-import { Plus, Trash2, Check, Circle, RotateCcw } from 'lucide-react'
+import { Plus, Search, SlidersHorizontal, UserRound } from 'lucide-react'
 
 export default function MembersPage() {
-  const { members, addMember, removeMember, resetAllShared } = useStore()
-  const [newName, setNewName] = useState('')
-  const [showAdd, setShowAdd] = useState(false)
-
-  const handleAdd = () => {
-    if (!newName.trim()) return
-    addMember(newName.trim())
-    setNewName('')
-    setShowAdd(false)
-  }
-
-  const sharedCount = members.filter(m => m.hasShared).length
+  const rows = [
+    ['张三', '未分享', 'Agent 工作流', '03-20'],
+    ['李四', '已分享', 'RAG 优化', '03-13'],
+    ['王五', '未分享', '待定', '-'],
+    ['赵六', '已分享', 'AI 搜索评测', '03-06'],
+    ['孙七', '未分享', '待定', '-'],
+  ]
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-start justify-between">
+    <div className="space-y-10">
+      <section className="flex items-end justify-between gap-8">
         <div>
-          <h1 className="text-4xl font-bold text-[#37352f]">👥 人员管理</h1>
-          <p className="text-[#787774] mt-2">管理参与分享的团队成员</p>
+          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-200">
+            <UserRound className="h-3.5 w-3.5" />
+            成员列表样板
+          </div>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">人员管理</h1>
+          <p className="mt-3 max-w-2xl text-base leading-7 text-slate-500">
+            采用现代 SaaS 的 table/list 风格，重点看列表密度、筛选条和状态呈现方式。
+          </p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="ghost" onClick={() => resetAllShared()}>
-            <RotateCcw className="w-4 h-4" />
-            重置
-          </Button>
-          <Button onClick={() => setShowAdd(!showAdd)}>
-            <Plus className="w-4 h-4" />
-            添加
-          </Button>
-        </div>
-      </div>
 
-      {/* Progress */}
-      <div className="border border-[#e9e9e7] rounded-lg p-5">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-sm text-[#787774]">本轮分享进度</span>
-          <span className="text-sm font-medium text-[#37352f]">{sharedCount} / {members.length}</span>
-        </div>
-        <div className="h-2 rounded-full bg-[#e9e9e7] overflow-hidden">
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${(sharedCount / members.length) * 100}%` }}
-            transition={{ duration: 0.5 }}
-            className="h-full rounded-full bg-[#2eaadc]"
-          />
-        </div>
-        <p className="text-xs text-[#9b9a97] mt-2">所有人分享完一轮后将自动重置</p>
-      </div>
+        <button className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800">
+          <Plus className="h-4 w-4" />
+          新增成员
+        </button>
+      </section>
 
-      {/* Add Form */}
-      <AnimatePresence>
-        {showAdd && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-          >
-            <div className="border border-[#e9e9e7] rounded-lg p-4">
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
-                  placeholder="输入姓名..."
-                  autoFocus
-                  className="flex-1 px-3 py-2 rounded-md border border-[#e9e9e7] text-sm focus:outline-none focus:ring-2 focus:ring-[#2eaadc]/30 focus:border-[#2eaadc]"
-                />
-                <Button onClick={handleAdd} disabled={!newName.trim()}>
-                  添加
-                </Button>
-              </div>
+      <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="flex flex-col gap-4 border-b border-slate-200 px-6 py-5 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <div className="text-lg font-semibold text-slate-900">成员列表</div>
+            <div className="mt-1 text-sm text-slate-500">展示成员状态、最近主题与最近分享时间</div>
+          </div>
+
+          <div className="flex gap-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <input
+                placeholder="搜索成员"
+                className="w-64 rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-4 focus:ring-slate-100"
+              />
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <button className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50">
+              <SlidersHorizontal className="h-4 w-4" />
+              筛选
+            </button>
+          </div>
+        </div>
 
-      {/* Members List */}
-      <div className="border border-[#e9e9e7] rounded-lg overflow-hidden">
-        <AnimatedList>
-          {members.map((member, i) => (
-            <AnimatedListItem key={member.id} id={member.id} index={i}>
-              <div
-                className={`flex items-center justify-between px-4 py-3 hover:bg-[#f7f6f3] transition-colors ${
-                  i !== members.length - 1 ? 'border-b border-[#e9e9e7]' : ''
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  {member.hasShared ? (
-                    <div className="w-5 h-5 rounded-full bg-[#6ab04c] flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
-                    </div>
-                  ) : (
-                    <Circle className="w-5 h-5 text-[#d3d1cb]" />
-                  )}
-                  <span className={member.hasShared ? 'text-[#9b9a97]' : 'text-[#37352f]'}>
-                    {member.name}
-                  </span>
-                  {member.shareHistory.length > 0 && (
-                    <span className="text-xs text-[#9b9a97]">
-                      已分享 {member.shareHistory.length} 次
-                    </span>
-                  )}
+        <div className="overflow-hidden">
+          <div className="grid grid-cols-[1.2fr_0.7fr_1fr_0.7fr_0.45fr] gap-4 border-b border-slate-200 bg-slate-50 px-6 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+            <div>成员</div>
+            <div>状态</div>
+            <div>最近主题</div>
+            <div>最近分享</div>
+            <div className="text-right">操作</div>
+          </div>
+
+          {rows.map(([name, status, topic, date], i) => (
+            <div
+              key={name}
+              className={`grid grid-cols-[1.2fr_0.7fr_1fr_0.7fr_0.45fr] gap-4 px-6 py-4 text-sm items-center ${
+                i !== rows.length - 1 ? 'border-b border-slate-200' : ''
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 font-semibold text-slate-700">
+                  {name.slice(0, 1)}
                 </div>
-                <button
-                  onClick={() => removeMember(member.id)}
-                  className="p-1.5 rounded hover:bg-[#ffe2dd] text-[#d3d1cb] hover:text-[#eb5757] transition-colors"
-                >
-                  <Trash2 className="w-4 h-4" />
+                <div>
+                  <div className="font-medium text-slate-900">{name}</div>
+                  <div className="text-xs text-slate-500">产品技术组</div>
+                </div>
+              </div>
+
+              <div>
+                <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
+                  status === '已分享'
+                    ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200'
+                    : 'bg-slate-100 text-slate-700'
+                }`}>
+                  {status}
+                </span>
+              </div>
+
+              <div className="text-slate-600">{topic}</div>
+              <div className="text-slate-500">{date}</div>
+              <div className="text-right">
+                <button className="rounded-lg px-3 py-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900">
+                  编辑
                 </button>
               </div>
-            </AnimatedListItem>
+            </div>
           ))}
-        </AnimatedList>
-      </div>
+        </div>
+      </section>
     </div>
   )
 }
