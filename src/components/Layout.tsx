@@ -12,65 +12,78 @@ const navItems = [
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-[var(--background)]">
-      {/* Top gradient glow */}
-      <div className="fixed top-0 left-0 right-0 h-[300px] bg-gradient-to-b from-indigo-950/20 via-purple-950/10 to-transparent pointer-events-none z-0" />
-
-      {/* Navbar */}
-      <motion.nav
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="sticky top-0 z-50 border-b border-zinc-800/50 bg-zinc-950/80 backdrop-blur-xl"
+    <div className="min-h-screen bg-[#09090b] flex">
+      {/* Sidebar */}
+      <motion.aside
+        initial={{ x: -20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.4 }}
+        className="fixed left-0 top-0 bottom-0 w-64 bg-[#0c0c0f] border-r border-zinc-800/50 flex flex-col z-50"
       >
-        <div className="w-full flex items-center justify-between px-8 h-16">
-          <div className="flex items-center gap-2.5">
-            <motion.div
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-            >
-              <Sparkles className="w-5 h-5 text-indigo-400" />
-            </motion.div>
-            <span className="text-lg font-semibold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-              AI 分享会
-            </span>
-          </div>
+        {/* Logo */}
+        <div className="h-16 flex items-center gap-3 px-6 border-b border-zinc-800/50">
+          <motion.div
+            animate={{ rotate: [0, 360] }}
+            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+          >
+            <Sparkles className="w-6 h-6 text-indigo-400" />
+          </motion.div>
+          <span className="text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+            AI 分享会
+          </span>
+        </div>
 
-          <div className="flex items-center gap-1">
+        {/* Nav Items */}
+        <nav className="flex-1 py-6 px-3">
+          <div className="space-y-1">
             {navItems.map(({ to, icon: Icon, label }) => (
               <NavLink key={to} to={to} end={to === '/'}>
                 {({ isActive }) => (
                   <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ x: 4 }}
+                    whileTap={{ scale: 0.98 }}
                     className={cn(
-                      'relative flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                      'relative flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all',
                       isActive
-                        ? 'text-white'
-                        : 'text-zinc-400 hover:text-zinc-200'
+                        ? 'text-white bg-indigo-600/10 border border-indigo-500/20'
+                        : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50'
                     )}
                   >
+                    <Icon className={cn('w-5 h-5', isActive ? 'text-indigo-400' : '')} />
+                    <span>{label}</span>
                     {isActive && (
                       <motion.div
-                        layoutId="activeTab"
-                        className="absolute inset-0 bg-zinc-800/80 rounded-lg border border-zinc-700/50"
-                        transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                        layoutId="activeIndicator"
+                        className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-indigo-500 rounded-r-full"
+                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                       />
                     )}
-                    <Icon className="w-4 h-4 relative z-10" />
-                    <span className="relative z-10 hidden sm:inline">{label}</span>
                   </motion.div>
                 )}
               </NavLink>
             ))}
           </div>
+        </nav>
+
+        {/* Footer */}
+        <div className="p-4 border-t border-zinc-800/50">
+          <div className="text-xs text-zinc-600 text-center">
+            每周五 10:15
+          </div>
         </div>
-      </motion.nav>
+      </motion.aside>
 
       {/* Main Content */}
-      <main className="relative z-10 w-full px-8 py-8">
-        <Outlet />
-      </main>
+      <div className="flex-1 ml-64">
+        {/* Top gradient glow */}
+        <div className="fixed top-0 left-64 right-0 h-[200px] bg-gradient-to-b from-indigo-950/20 via-purple-950/5 to-transparent pointer-events-none z-0" />
+
+        <main className="relative z-10 p-8 min-h-screen">
+          <div className="max-w-5xl mx-auto">
+            <Outlet />
+          </div>
+        </main>
+      </div>
     </div>
   )
 }
