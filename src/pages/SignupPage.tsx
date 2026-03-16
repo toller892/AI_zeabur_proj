@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useStore } from '@/store/useStore'
-import { AnimatedCard } from '@/components/ui/AnimatedCard'
-import { ShimmerButton } from '@/components/ui/ShimmerButton'
-import { Confetti } from '@/components/ui/Animations'
-import { Send, CalendarDays, Pen, FileText, CheckCircle2 } from 'lucide-react'
+import { Button, Tag } from '@/components/ui/Button'
+import { Check } from 'lucide-react'
 
 export default function SignupPage() {
   const { addSignup, getUpcomingFridays, getSignupsForDate } = useStore()
@@ -15,7 +13,6 @@ export default function SignupPage() {
   const [topic, setTopic] = useState('')
   const [description, setDescription] = useState('')
   const [submitted, setSubmitted] = useState(false)
-  const [showConfetti, setShowConfetti] = useState(false)
 
   const signupsForSelected = getSignupsForDate(targetDate)
 
@@ -25,78 +22,47 @@ export default function SignupPage() {
 
     addSignup({ name: name.trim(), targetDate, topic: topic.trim(), description: description.trim() })
     setSubmitted(true)
-    setShowConfetti(true)
-
-    setTimeout(() => {
-      setShowConfetti(false)
-    }, 2000)
 
     setTimeout(() => {
       setSubmitted(false)
       setName('')
       setTopic('')
       setDescription('')
-    }, 3000)
+    }, 2000)
   }
 
   const inputClass =
-    'w-full px-5 py-4 rounded-xl bg-zinc-900/80 border border-zinc-800 text-white text-base placeholder-zinc-600 ' +
-    'focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/50 transition-all duration-300'
+    'w-full px-3 py-2 rounded-md border border-[#e9e9e7] bg-white text-[#37352f] text-sm ' +
+    'placeholder-[#9b9a97] focus:outline-none focus:ring-2 focus:ring-[#2eaadc]/30 focus:border-[#2eaadc] transition-all'
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="max-w-3xl space-y-10"
-    >
+    <div className="space-y-8">
       {/* Header */}
-      <div className="space-y-3">
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-4xl font-bold text-white"
-        >
-          📋 报名分享
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-lg text-zinc-400"
-        >
-          报名参加每周五 10:15 的 AI 分享会
-        </motion.p>
+      <div>
+        <h1 className="text-4xl font-bold text-[#37352f]">✍️ 报名分享</h1>
+        <p className="text-[#787774] mt-2">报名参加每周五 10:15 的 AI 分享会</p>
       </div>
 
       {/* Form */}
-      <AnimatedCard hoverable={false} className="relative overflow-hidden !p-8">
-        <Confetti show={showConfetti} />
-
+      <div className="max-w-lg">
         {submitted ? (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            className="flex flex-col items-center gap-5 py-12"
+            className="border border-[#dbeddb] bg-[#f6fff6] rounded-lg p-8 text-center"
           >
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', stiffness: 500, damping: 15, delay: 0.1 }}
-            >
-              <CheckCircle2 className="w-20 h-20 text-emerald-400" />
-            </motion.div>
-            <h3 className="text-2xl font-semibold text-white">报名成功！</h3>
-            <p className="text-lg text-zinc-400">已加入候选列表，等待排期确认</p>
+            <div className="w-12 h-12 rounded-full bg-[#6ab04c] flex items-center justify-center mx-auto mb-4">
+              <Check className="w-6 h-6 text-white" />
+            </div>
+            <h3 className="text-lg font-semibold text-[#37352f]">报名成功！</h3>
+            <p className="text-sm text-[#787774] mt-1">已加入候选列表，等待排期确认</p>
           </motion.div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {/* Name */}
-            <div className="space-y-3">
-              <label className="flex items-center gap-2 text-base font-medium text-zinc-300">
-                <Pen className="w-5 h-5 text-indigo-400" />
-                姓名 <span className="text-red-400">*</span>
+            <div>
+              <label className="block text-sm font-medium text-[#37352f] mb-1.5">
+                姓名 <span className="text-[#eb5757]">*</span>
               </label>
               <input
                 type="text"
@@ -109,49 +75,40 @@ export default function SignupPage() {
             </div>
 
             {/* Date */}
-            <div className="space-y-3">
-              <label className="flex items-center gap-2 text-base font-medium text-zinc-300">
-                <CalendarDays className="w-5 h-5 text-indigo-400" />
-                分享日期 <span className="text-red-400">*</span>
+            <div>
+              <label className="block text-sm font-medium text-[#37352f] mb-1.5">
+                分享日期 <span className="text-[#eb5757]">*</span>
               </label>
-              <div className="grid grid-cols-1 gap-3">
-                {fridays.slice(0, 6).map((f, i) => {
+              <div className="space-y-2">
+                {fridays.slice(0, 5).map((f) => {
                   const count = getSignupsForDate(f.date).length
                   return (
-                    <motion.button
+                    <button
                       key={f.date}
                       type="button"
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 + i * 0.03 }}
-                      whileHover={{ x: 4 }}
-                      whileTap={{ scale: 0.98 }}
                       onClick={() => setTargetDate(f.date)}
-                      className={`flex items-center justify-between px-5 py-4 rounded-xl text-base text-left transition-all ${
+                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm text-left transition-all border ${
                         targetDate === f.date
-                          ? 'bg-indigo-600/15 border border-indigo-500/30 text-indigo-300'
-                          : 'bg-zinc-900/50 border border-zinc-800/50 text-zinc-400 hover:border-zinc-700'
+                          ? 'border-[#2eaadc] bg-[#f0f9ff]'
+                          : 'border-[#e9e9e7] hover:bg-[#f7f6f3]'
                       }`}
                     >
-                      <span>{f.label}</span>
-                      <span className={`text-sm px-3 py-1 rounded-full ${
-                        count >= 4
-                          ? 'bg-amber-500/10 text-amber-400'
-                          : 'bg-zinc-800 text-zinc-500'
-                      }`}>
-                        {count} 人报名
+                      <span className={targetDate === f.date ? 'text-[#2eaadc]' : 'text-[#37352f]'}>
+                        {f.label}
                       </span>
-                    </motion.button>
+                      <Tag color={count >= 4 ? 'yellow' : 'gray'}>
+                        {count} 人
+                      </Tag>
+                    </button>
                   )
                 })}
               </div>
             </div>
 
             {/* Topic */}
-            <div className="space-y-3">
-              <label className="flex items-center gap-2 text-base font-medium text-zinc-300">
-                <FileText className="w-5 h-5 text-indigo-400" />
-                分享主题 <span className="text-red-400">*</span>
+            <div>
+              <label className="block text-sm font-medium text-[#37352f] mb-1.5">
+                分享主题 <span className="text-[#eb5757]">*</span>
               </label>
               <input
                 type="text"
@@ -164,60 +121,51 @@ export default function SignupPage() {
             </div>
 
             {/* Description */}
-            <div className="space-y-3">
-              <label className="flex items-center gap-2 text-base font-medium text-zinc-300">
-                <FileText className="w-5 h-5 text-zinc-500" />
-                内容描述 <span className="text-zinc-600">(选填)</span>
+            <div>
+              <label className="block text-sm font-medium text-[#37352f] mb-1.5">
+                内容描述 <span className="text-[#9b9a97]">(选填)</span>
               </label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="简要描述分享的内容..."
-                rows={4}
+                rows={3}
                 className={inputClass + ' resize-none'}
               />
             </div>
 
             {/* Submit */}
-            <ShimmerButton
+            <Button
               type="submit"
               disabled={!name.trim() || !topic.trim() || !targetDate}
-              className="w-full !py-4 !text-lg"
-              size="lg"
+              className="w-full !py-2.5"
             >
-              <Send className="w-5 h-5" />
               提交报名
-            </ShimmerButton>
+            </Button>
           </form>
         )}
-      </AnimatedCard>
+      </div>
 
-      {/* Current signups for selected date */}
+      {/* Current signups */}
       {signupsForSelected.length > 0 && !submitted && (
-        <AnimatedCard hoverable={false} delay={0.2} className="!p-6">
-          <h3 className="text-base font-semibold text-zinc-400 mb-4">
+        <div className="max-w-lg">
+          <h3 className="text-sm font-medium text-[#787774] mb-3">
             📊 {targetDate} 已报名 ({signupsForSelected.length} 人)
           </h3>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {signupsForSelected.map((s, i) => (
-              <motion.div
-                key={s.id}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.05 }}
-                className="flex items-center gap-4 text-base"
-              >
-                <span className="w-7 h-7 rounded-full bg-zinc-800 flex items-center justify-center text-sm text-zinc-500">
+              <div key={s.id} className="flex items-center gap-3 text-sm">
+                <span className="w-5 h-5 rounded bg-[#f7f6f3] flex items-center justify-center text-xs text-[#787774]">
                   {i + 1}
                 </span>
-                <span className="text-zinc-300">{s.name}</span>
-                <span className="text-zinc-600">·</span>
-                <span className="text-zinc-500 truncate">{s.topic}</span>
-              </motion.div>
+                <span className="text-[#37352f]">{s.name}</span>
+                <span className="text-[#d3d1cb]">·</span>
+                <span className="text-[#787774] truncate">{s.topic}</span>
+              </div>
             ))}
           </div>
-        </AnimatedCard>
+        </div>
       )}
-    </motion.div>
+    </div>
   )
 }

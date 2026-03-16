@@ -1,13 +1,26 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
-interface AnimatedCardProps {
+interface CardProps {
   children: React.ReactNode
   className?: string
-  delay?: number
   onClick?: () => void
   hoverable?: boolean
-  glowColor?: string
+}
+
+export function Card({ children, className, onClick, hoverable = false }: CardProps) {
+  return (
+    <div
+      onClick={onClick}
+      className={cn(
+        'rounded-md transition-colors',
+        hoverable && 'hover:bg-[#f7f6f3] cursor-pointer',
+        className
+      )}
+    >
+      {children}
+    </div>
+  )
 }
 
 export function AnimatedCard({
@@ -15,22 +28,18 @@ export function AnimatedCard({
   className,
   delay = 0,
   onClick,
-  hoverable = true,
-  glowColor,
-}: AnimatedCardProps) {
+  hoverable = false,
+}: CardProps & { delay?: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.4, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
-      whileHover={hoverable ? { y: -2, transition: { duration: 0.2 } } : undefined}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.2, delay }}
       onClick={onClick}
       className={cn(
-        'relative rounded-2xl border border-zinc-800/80 bg-zinc-900/50 p-5 backdrop-blur-sm',
-        'transition-all duration-300',
-        hoverable && 'hover:border-zinc-700/80 hover:bg-zinc-800/50 cursor-pointer',
-        glowColor && `hover:shadow-lg hover:shadow-${glowColor}/10`,
+        'rounded-md transition-colors',
+        hoverable && 'hover:bg-[#f7f6f3] cursor-pointer',
         className
       )}
     >
@@ -40,33 +49,26 @@ export function AnimatedCard({
 }
 
 export function AnimatedList({ children }: { children: React.ReactNode }) {
-  return (
-    <AnimatePresence mode="popLayout">
-      {children}
-    </AnimatePresence>
-  )
+  return <AnimatePresence mode="popLayout">{children}</AnimatePresence>
 }
 
-interface AnimatedListItemProps {
+export function AnimatedListItem({
+  children,
+  id,
+  index = 0,
+}: {
   children: React.ReactNode
   id: string
   index?: number
-}
-
-export function AnimatedListItem({ children, id, index = 0 }: AnimatedListItemProps) {
+}) {
   return (
     <motion.div
       key={id}
       layout
-      initial={{ opacity: 0, x: -30, scale: 0.95 }}
-      animate={{ opacity: 1, x: 0, scale: 1 }}
-      exit={{ opacity: 0, x: 30, scale: 0.95 }}
-      transition={{
-        type: 'spring',
-        stiffness: 500,
-        damping: 30,
-        delay: index * 0.05,
-      }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.2, delay: index * 0.03 }}
     >
       {children}
     </motion.div>
